@@ -1,0 +1,18 @@
+[package]
+name = "ccaguest"
+version = "0.1.0"
+edition = "2024"
+repository = "https://github.com/veraison/ccaguest"
+readme = "README.md"
+description = "CLI for RATS-based attestation workflows for ARM CCA"
+license = "Apache-2.0"
+keywords = ["attestation", "verification", "veraison", "endorsements"]
+categories = ["command-line-utilities", "cryptography", "security"]
+
+[dependencies]
+clap = { version = "4.6.1", features = ["derive"] }
+clap-verbosity-flag = "3.0.4"
+env_logger = "0.11.11"
+log = "0.4.33"
+thiserror = "2.0.18"
+url = { version = "2.5.8", features = ["serde"] }
