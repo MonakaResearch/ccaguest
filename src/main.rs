@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 mod cli;
+mod coserv;
 mod display;
 mod error;
+mod evidence;
 mod fetch;
 mod submit;
 mod utils;

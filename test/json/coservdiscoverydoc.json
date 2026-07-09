@@ -1,0 +1,149 @@
+{
+  "version": "0.0.2606+f997c52",
+  "capabilities": [
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:github.com/parallaxsecond,2023-03-03:cca\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:github.com/parallaxsecond,2023-03-03:cca\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:arm.com,2025:psa#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:arm.com,2025:psa#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:amd.com,2024:snp-corim-profile\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:amd.com,2024:snp-corim-profile\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"https://amd.com/ark\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"https://amd.com/ark\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:arm.com,2025:cca_platform#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:arm.com,2025:cca_platform#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:arm.com,2025:cca_realm#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:arm.com,2025:cca_realm#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:github.com/parallaxsecond,2023-03-03:tpm\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:github.com/parallaxsecond,2023-03-03:tpm\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:veraison-project.com,2026:riot\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:veraison-project.com,2026:riot\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"https://enacttrust.com/veraison/1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"https://enacttrust.com/veraison/1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:github.com/veraison,2023:nvidia_coserv_proxy#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:github.com/veraison,2023:nvidia_coserv_proxy#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cbor; profile=\"tag:github.com/veraison,2023:amd_kds_coserv_proxy#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    },
+    {
+      "media-type": "application/coserv+cose; profile=\"tag:github.com/veraison,2023:amd_kds_coserv_proxy#1.0.0\"",
+      "artifact-support": [
+        "collected"
+      ]
+    }
+  ],
+  "api-endpoints": {
+    "CoSERVRequestResponse": "/endorsement-distribution/v1/coserv/{query}"
+  },
+  "result-verification-key": [
+    {
+      "alg": "ES256",
+      "crv": "P-256",
+      "kty": "EC",
+      "x": "z0tNsgUHK1TZC329jqr33s_Guafq1kD-SjAVwljBB8Y",
+      "y": "XIrVm-N3_yWsZCtwwaPVQa6r8SkRdBtySo6XhXZ0-FI"
+    }
+  ]
+}

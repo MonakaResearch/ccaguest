@@ -39,9 +39,9 @@ mod policy {
         #[arg(short = 'f', long, value_parser = utils::validate_input_file_path)]
         policy_file: PathBuf,
 
-        /// Common flags for all commands.
+        // Common flags for all commands.
         #[command(flatten)]
-        pub common: CommonFlags,
+        common: CommonFlags,
     }
 
     /// Submit a policy to the management service.

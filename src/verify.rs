@@ -1,4 +1,4 @@
-// Copyright 2025 Contributors to the Veraison project.
+// Copyright 2026 Contributors to the Veraison project.
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::{cli::CommonFlags, error::Result};
@@ -74,7 +74,7 @@ mod local {
         /// The path to the directory where local coserv results will be cached.
         /// If not specified, no local caching is performed, and all CoSERV requests
         /// will go to the server.
-        #[arg(short = 'l', long, value_parser = utils::validate_input_file_path)]
+        #[arg(short = 'l', long, value_parser = utils::validate_input_directory_path)]
         local_cache: Option<PathBuf>,
 
         /// The server MUST sign CoSERV results. The command fails
@@ -87,9 +87,9 @@ mod local {
         #[arg(short, long, value_parser = utils::validate_output_path, default_value = "ear.json")]
         output: PathBuf,
 
-        /// Common flags for all commands.
+        // Common flags for all commands.
         #[command(flatten)]
-        pub common: CommonFlags,
+        common: CommonFlags,
     }
 
     /// Verify an ARM-CCA based Confidential (Realm) VM using a local verifier.
@@ -121,9 +121,9 @@ mod remote {
         #[arg(short = 'P', long)]
         policy_id: Option<String>,
 
-        /// Common flags for all commands.
+        // Common flags for all commands.
         #[command(flatten)]
-        pub common: CommonFlags,
+        common: CommonFlags,
     }
 
     /// Verify an ARM-CCA based Confidential (Realm) VM using a remote verifier.
