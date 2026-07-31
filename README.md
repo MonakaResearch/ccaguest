@@ -5,7 +5,7 @@ This repository contains a Rust-based command-line tool for the following ARM CC
 - Evidence generation
 - Evidence verification in remote and local mode
 - Endorsements fetch
-- Policy fetch and submission
+- Policy fetch and submission (TODO)
 - Evidence, EAR, and endorsements display
 
 ## Command Tree
@@ -31,7 +31,7 @@ Once the attestaion evidence has been verified, the received attestation results
 `ccaguest` uses [cover](https://github.com/veraison/cover) to locally verify an attestation report without connecting to a remote verification service. The endorsements can be queried from a [remote CoSERV service](https://github.com/veraison/tree/main/coserv) using [rust-apiclient](https://github.com/veraison/rust-apiclient).
  
 >[!NOTE]
->`ccaguest` can also be used within a non-realm VM and the attestation evidence can be retrieved from a Realm VM using `regl`'s `ratsd` backend.
+>While using the `tsm` backend for attester, `sudo` permissions are required for `ccaguest`. `tsm` backend uses linux kernel's `configfs-tsm-report` ABI to fetch the evidence. Hence the process must have sufficient privilege to write to `configfs`, which can be usually done by escalating the privilege using `sudo`. It can also be used within a non-realm VM and the attestation evidence can be retrieved from a Realm VM using `regl`'s `ratsd` backend without `sudo` permissions.
 
 >[!NOTE]
 > The CoSERV service used during local verification must support `collected` result type.

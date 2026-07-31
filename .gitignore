@@ -21,6 +21,11 @@ target
 #.idea/
 
 *.cbor
+*.json
+*.jwt
+*.jwk
 
+# required to be checked in for test fixtures
 !test/cbor/*.cbor
 !test/json/*.json
+!test/json/*.jwk
