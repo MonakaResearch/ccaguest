@@ -1,0 +1,8 @@
+{
+  "nonce": "bobW2XzHE7xt1D285JGmtAMRwCeov4WjnaY-nORMEyqKEZ0pb65qaZnpvz5EcbDOASRdiJQkwx6JeTs7HWsVBA",
+  "expiry": "2031-08-09T18:24:08.988031620Z",
+  "accept": [
+    "application/eat-collection; profile=\"http://arm.com/CCA-SSD/1.0.0\""
+  ],
+  "status": "waiting"
+}

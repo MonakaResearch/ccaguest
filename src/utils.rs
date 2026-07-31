@@ -36,6 +36,9 @@ pub fn validate_input_directory_path(path: &str) -> Result<PathBuf> {
 
 /// validate_output_path will check if output path is valid.
 pub fn validate_output_path(path: &str) -> Result<PathBuf> {
+    if path.trim().is_empty() {
+        return Err(Error::custom("output path is empty"));
+    }
     let path_buf = PathBuf::from(path);
     Ok(path_buf)
 }
@@ -78,14 +81,16 @@ pub fn decode_base64(encoded: &str) -> Result<Vec<u8>> {
 }
 
 /// write given content to output file
-pub fn write_output_to_file(content: &[u8], output: &Path) -> Result<()> {
-    let parent = output.parent();
-    if let Some(p) = parent
-        && p != ""
-        && !p.is_dir()
+pub fn write_output_to_file<C>(content: C, output: &Path) -> Result<()>
+where
+    C: AsRef<[u8]>,
+{
+    if let Some(parent) = output.parent()
+        && !parent.is_dir()
+        && !parent.is_empty()
     {
-        fs::create_dir_all(p)?;
-        debug!("created parent directory: {:?}", p);
+        fs::create_dir_all(parent)?;
+        debug!("created parent directory: {:?}", parent);
     }
     fs::write(output, content)?;
     Ok(())
@@ -133,6 +138,12 @@ mod tests {
     #[test]
     fn test_invalid_input_directory_path() {
         let result = validate_input_directory_path("abc");
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_invalid_output_path() {
+        let result = validate_output_path("");
         assert!(result.is_err());
     }
 

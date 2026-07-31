@@ -52,6 +52,12 @@ pub enum Error {
     #[error(transparent)]
     Coserv(#[from] coserv_rs::error::CoservError),
 
+    #[error(transparent)]
+    Cover(#[from] cover::result::Error),
+
+    #[error(transparent)]
+    Ear(#[from] ear::Error),
+
     #[error("{0}")]
     Custom(String),
 }
