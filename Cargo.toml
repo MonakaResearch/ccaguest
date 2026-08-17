@@ -1,0 +1,29 @@
+[package]
+name = "ccaguest"
+version = "0.1.0"
+edition = "2024"
+repository = "https://github.com/veraison/ccaguest"
+readme = "README.md"
+description = "CLI for RATS-based attestation workflows for ARM CCA"
+license = "Apache-2.0"
+keywords = ["attestation", "verification", "veraison", "endorsements"]
+categories = ["command-line-utilities", "cryptography", "security"]
+
+[dependencies]
+clap = { version = "4.6.5", features = ["derive"] }
+clap-verbosity-flag = "3.0.4"
+env_logger = "0.11.11"
+log = "0.4.33"
+thiserror = "2.0.19"
+url = { version = "2.5.8", features = ["serde"] }
+base64 = "0.23.0"
+serde_json = "1.0.151"
+regl = { git = "https://github.com/veraison/rust-regl.git", rev = "fe77b67"}
+rand = "0.10.2"
+hex = "0.4.3"
+tokio = "1.53.1"
+coserv-rs = { git = "https://github.com/veraison/coserv-rs.git", features = ["openssl"], rev = "15121e8" }
+veraison-apiclient = { git = "https://github.com/veraison/rust-apiclient.git", features = [ "disk-caching" ], rev = "cc0405c" }
+
+[dev-dependencies]
+wiremock = "0.6.5"
