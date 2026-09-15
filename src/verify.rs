@@ -60,15 +60,18 @@ mod local {
         #[arg(short, long, value_enum, conflicts_with_all = &["evidence"], default_value_t = AttesterKind::Ratsd)]
         attester: AttesterKind,
 
-        /// URL of the RATSD daemon to connect to. Required when --attester is set to `ratsd`. Defaults to `http://localhost:8895`.
+        /// URL of the RATSD daemon to connect to. Required when --attester
+        /// is set to `ratsd`. Defaults to `http://localhost:8895`.
         #[arg(long, value_parser = utils::validate_base_url)]
         ratsd_url: Option<String>,
 
-        /// Path to ARM CCA claims file (JSON format) to build a simulated attester (i.e., when --attester is set to `sim`). Default to `test/json/cca-claims.json`.
+        /// Path to ARM CCA claims file (JSON format) to build a simulated attester
+        /// (i.e., when --attester is set to `sim`). Default to `test/json/cca-claims.json`.
         #[arg(long, value_parser = utils::validate_input_file_path)]
         sim_claims: Option<PathBuf>,
 
-        /// Path to ARM CCA iak file (JWK format) to build a simulated attester (i.e., when --attester is set to `sim`). Default to `test/json/iak.jwk`.
+        /// Path to ARM CCA iak file (JWK format) to build a simulated attester
+        /// (i.e., when --attester is set to `sim`). Default to `test/json/iak.jwk`.
         #[arg(long, value_parser = utils::validate_input_file_path)]
         sim_iak: Option<PathBuf>,
 
@@ -445,15 +448,18 @@ mod remote {
         #[arg(short, long, value_enum, conflicts_with_all = &["evidence"], default_value_t = AttesterKind::Ratsd)]
         attester: AttesterKind,
 
-        /// URL of the RATSD daemon to connect to. Required when --attester is set to `ratsd`. Defaults to `http://localhost:8895`.
+        /// URL of the RATSD daemon to connect to. Required when --attester
+        /// is set to `ratsd`. Defaults to `http://localhost:8895`.
         #[arg(long, value_parser = utils::validate_base_url)]
         ratsd_url: Option<String>,
 
-        /// Path to ARM CCA claims file (JSON format) to build a simulated attester (i.e., when --attester is set to `sim`). Default to `test/json/cca-claims.json`.
+        /// Path to ARM CCA claims file (JSON format) to build a simulated attester
+        /// (i.e., when --attester is set to `sim`). Default to `test/json/cca-claims.json`.
         #[arg(long, value_parser = utils::validate_input_file_path)]
         sim_claims: Option<PathBuf>,
 
-        /// Path to ARM CCA iak file (JWK format) to build a simulated attester (i.e., when --attester is set to `sim`). Default to `test/json/iak.jwk`.
+        /// Path to ARM CCA iak file (JWK format) to build a simulated attester
+        /// (i.e., when --attester is set to `sim`). Default to `test/json/iak.jwk`.
         #[arg(long, value_parser = utils::validate_input_file_path)]
         sim_iak: Option<PathBuf>,
 
@@ -570,7 +576,7 @@ mod remote {
         Ok(())
     }
 
-    // run discovery and establish ChallengeResponse Session to get the EAR from the verification server
+    /// run discovery and establish ChallengeResponse Session to get the EAR from the verification server
     #[allow(clippy::too_many_arguments)]
     fn run_discovery_and_verify(
         verification_server: &str,
@@ -768,6 +774,9 @@ mod remote {
                 .unwrap()
                 .block_on(async { start_mock_verification_server().await });
 
+            let temp_dir = tempfile::tempdir().unwrap();
+            let output_path = temp_dir.path().join("test_ear.jwk");
+
             let args = remote::Args {
                 verification_server: server.uri(),
                 ca_cert: None,
@@ -781,7 +790,7 @@ mod remote {
                 nonce_hex: None,
                 nonce_b64: None,
                 nonce_b64url: None,
-                output: "ear.jwk".into(),
+                output: output_path,
                 common: CommonFlags {
                     pretty: true,
                     force: true,
@@ -798,6 +807,9 @@ mod remote {
                 .unwrap()
                 .block_on(async { start_mock_verification_server().await });
 
+            let temp_dir = tempfile::tempdir().unwrap();
+            let output_path = temp_dir.path().join("test_ear.jwk");
+
             let args = remote::Args {
                 verification_server: server.uri(),
                 ca_cert: None,
@@ -811,14 +823,13 @@ mod remote {
                 nonce_hex: None,
                 nonce_b64: None,
                 nonce_b64url: None,
-                output: "ear.jwk".into(),
+                output: output_path,
                 common: CommonFlags {
                     pretty: true,
                     force: true,
                 },
             };
             let result = remote::verify(args);
-            println!("result: {:?}", result);
             assert!(result.is_ok());
         }
     }
