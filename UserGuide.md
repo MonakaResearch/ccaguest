@@ -5,7 +5,7 @@
 - Evidence generation
 - Evidence verification in remote and local mode
 - Endorsements fetch
-- Policy fetch and submission (TODO)
+- Policy fetch, submission, activation, and deactivation
 - Evidence, EAR, and endorsements display
 
 ## Pre-requisites
@@ -498,10 +498,148 @@ Options:
 ```
 
 ### 7. `ccaguest submit policy`
-Yet to be implemented.
+
+![ccaguest submit policy](./docs/lld_submit_policy.png)
+
+This command submits, activates, or deactivates policies through the [`veraison/services`](https://github.com/veraison/services) management API.
+
+The user must provide the management service base URL. Optional TLS configuration can be supplied with the CA certificate option. All policy operations are scoped to a scheme; when not specified, the default scheme is `ARM_CCA`.
+
+The command supports three main actions:
+
+- Create a new policy. This also activates the policy by default. To submit a policy without activating it immediately, use `--dont-activate` or `-d`.
+- Activate an existing policy using a policy UUID.
+- Deactivate all policies for the selected scheme.
+
+Authentication for the management API can be configured directly through CLI arguments such as `--auth`, `--username`, `--password`, `--token-url`, `--client-id`, and `--client-secret`.
+
+```Shell
+$ ccaguest submit policy --management-server https://localhost:10443/ --new -f ./test/policy/allow-all.rego --auth oauth2 --username veraison-manager --password veraison --client-id veraison-client --client-secret YifmabB4cVSPPtFLAmHfq7wKaEHQn10Z --token-url https://localhost:11111/realms/veraison
+/protocol/openid-connect/token -v
+[2026-09-28T11:50:26Z INFO  ccaguest::submit::policy] created policy: 
+    Policy { uuid: cbcea596-bb32-11f1-b809-022182786b5b, ctime: 2026-09-28T11:50:26.727968371Z, name: "default", policy_type: "opa", rules: "package policy\n\nstatus = AFFIRMING\ninstance_identity = RECOGNIZED_INSTANCE\nconfiguration = APPROVED_CONFIG\nexecutables = APPROVED_RT\nfile_system = APPROVED_FS\nhardware = GENUINE_HW\nruntime_opaque = ENCRYPTED_RT\nstorage_opaque = HW_ENCRYPTED_SECRETS\nsourced_data = TRUSTED_SOURCES\npolicy_claims = {}\n", active: false }
+[2026-09-28T11:50:26Z INFO  ccaguest::submit::policy] activated policy: 
+    Policy { uuid: cbcea596-bb32-11f1-b809-022182786b5b, ctime: 2026-09-28T11:50:26.727968371Z, name: "default", policy_type: "opa", rules: "package policy\n\nstatus = AFFIRMING\ninstance_identity = RECOGNIZED_INSTANCE\nconfiguration = APPROVED_CONFIG\nexecutables = APPROVED_RT\nfile_system = APPROVED_FS\nhardware = GENUINE_HW\nruntime_opaque = ENCRYPTED_RT\nstorage_opaque = HW_ENCRYPTED_SECRETS\nsourced_data = TRUSTED_SOURCES\npolicy_claims = {}\n", active: false }
+[2026-09-28T11:50:26Z INFO  ccaguest] done.
+```
+
+```Shell
+$ ccaguest submit policy -h
+Submit a policy to the verification service
+
+Usage: ccaguest submit policy [OPTIONS] --management-server <MANAGEMENT_SERVER>
+
+Options:
+  -S, --management-server <MANAGEMENT_SERVER>
+          The base URL of the management service
+  -v, --verbose...
+          Increase logging verbosity
+  -q, --quiet...
+          Decrease logging verbosity
+  -t, --ca-cert <CA_CERT>
+          The path to an X509 certificate to bootstrap TLS handshakes with the management service
+      --new
+          Create a new policy for the specified scheme. The policy will be activated unless --dont-activate (or -d) is specified
+      --activate
+          Activate an existing policy
+      --deactivate
+          Deactivate all policies for a scheme
+  -s, --scheme <SCHEME>
+          The attestation scheme for the policy. Default is ARM_CCA [default: ARM_CCA]
+  -f, --policy-file <POLICY_FILE>
+          Path to the Rego policy file (.rego) to submit. Only applicable when --new is specified
+  -n, --name <NAME>
+          Optional human-readable name for the policy. Only applicable when --new is specified
+  -d, --dont-activate
+          Don't activate the policy after creating it. Only applicable when --new is specified
+  -P, --policy-id <POLICY_ID>
+          Policy UUID to activate. Only applicable when --activate is specified
+      --auth <AUTH>
+          Authentication method to use for the management API. Can be one of: passthrough, basic, or oauth2. Default is passthrough [default: passthrough] [possible values: passthrough, basic, oauth2]
+      --username <USERNAME>
+          Username for basic auth or OAuth2 resource-owner credentials
+      --password <PASSWORD>
+          Password for basic auth or OAuth2 resource-owner credentials
+      --token-url <TOKEN_URL>
+          OAuth2 token endpoint URL
+      --client-id <CLIENT_ID>
+          OAuth2 client ID
+      --client-secret <CLIENT_SECRET>
+          OAuth2 client secret
+  -h, --help
+          Print help
+```
 
 ### 8. `ccaguest fetch policy`
-Yet to be implemented.
+
+![ccaguest fetch policy](./docs/lld_fetch_policy.png)
+
+This command fetches policies from the [`veraison/services`](https://github.com/veraison/services) management API for a specific scheme.
+
+The user must provide the management service base URL. Optional TLS configuration can be supplied with the CA certificate option. All fetch operations are scoped to a scheme; when not specified, the default scheme is `ARM_CCA`.
+
+The command supports three fetch modes:
+
+- Retrieve all policies for the scheme by using `--all`. The results are written to the configured output directory, or to `./policies` in the current working directory by default.
+- Retrieve a specific policy by UUID using `--policy-id`. The output is written to the configured file path or to `<policy-id>.rego` in the current working directory by default.
+- Retrieve the currently active policy for the scheme when no explicit selector is provided. The output is written to the configured file path or to `<policy-id>.rego` in the current working directory by default.
+
+Authentication for the management API can be configured directly through CLI arguments such as `--auth`, `--username`, `--password`, `--token-url`, `--client-id`, and `--client-secret`.
+
+```Shell
+$ ccaguest fetch policy --management-server https://localhos
+t:10443/ --auth oauth2 --username veraison-manager --password veraison --client-id veraison-client --client-secret Yifm
+abB4cVSPPtFLAmHfq7wKaEHQn10Z --token-url https://localhost:11111/realms/veraison/protocol/openid-connect/token -v
+[2026-09-28T11:53:27Z INFO  ccaguest::fetch::policy] Active policy for ARM_CCA: 
+    Policy { uuid: cbcea596-bb32-11f1-b809-022182786b5b, ctime: 2026-09-28T11:50:26.727968371Z, name: "default", policy_type: "opa", rules: "package policy\n\nstatus = AFFIRMING\ninstance_identity = RECOGNIZED_INSTANCE\nconfiguration = APPROVED_CONFIG\nexecutables = APPROVED_RT\nfile_system = APPROVED_FS\nhardware = GENUINE_HW\nruntime_opaque = ENCRYPTED_RT\nstorage_opaque = HW_ENCRYPTED_SECRETS\nsourced_data = TRUSTED_SOURCES\npolicy_claims = {}\n", active: true }
+[2026-09-28T11:53:27Z INFO  ccaguest::fetch::policy] Policy saved to: "cbcea596-bb32-11f1-b809-022182786b5b.rego"
+[2026-09-28T11:53:27Z INFO  ccaguest] done.
+```
+
+```Shell
+$ ccaguest fetch policy -h
+Fetch policies from the verification service
+
+Usage: ccaguest fetch policy [OPTIONS] --management-server <MANAGEMENT_SERVER>
+
+Options:
+  -S, --management-server <MANAGEMENT_SERVER>
+          The base URL of the management service
+  -v, --verbose...
+          Increase logging verbosity
+  -q, --quiet...
+          Decrease logging verbosity
+  -t, --ca-cert <CA_CERT>
+          The path to an X509 certificate to bootstrap TLS handshakes with the management service
+      --policy-id <POLICY_ID>
+          Fetch a specific policy for the scheme by UUID. Conflicts with --active and --all
+      --all
+          Fetch all policies for the scheme. Conflicts with --active and --policy-id
+  -s, --scheme <SCHEME>
+          The attestation scheme for the policy. Default is ARM_CCA [default: ARM_CCA]
+      --auth <AUTH>
+          Authentication method to use for the management API. Can be one of: passthrough, basic, or oauth2. Default is passthrough [default: passthrough] [possible values: passthrough, basic, oauth2]
+      --username <USERNAME>
+          Username for basic auth or OAuth2 resource-owner credentials
+      --password <PASSWORD>
+          Password for basic auth or OAuth2 resource-owner credentials
+      --token-url <TOKEN_URL>
+          OAuth2 token endpoint URL
+      --client-id <CLIENT_ID>
+          OAuth2 client ID
+      --client-secret <CLIENT_SECRET>
+          OAuth2 client secret
+  -f, --outputfile <OUTPUTFILE>
+          With --active or --policy-id: output file path to save the fetched policy. If not specified, the policy will be saved to default `<policy-id>.rego` in the current working directory
+  -d, --outputdir <OUTPUTDIR>
+          With --all: output directory where each fetched policy is saved as <policy-id>.rego. If not specified, the policies will besaved to default `./policies` directory in the current working directory [default: ./policies]
+  -p, --pretty
+          Pretty print the output
+      --force
+          Force write if output exists
+  -h, --help
+          Print help
+```
 
 ### 9. `ccaguest display endorsements`
 Yet to be implemented.

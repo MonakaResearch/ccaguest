@@ -1,0 +1,13 @@
+{
+    "attestation-schemes": ["ARM_CCA"],
+    "version": "0.0.2608+6fbd4b8",
+    "service-state": "READY",
+    "api-endpoints": {
+        "createPolicy": "/management/v1/policy/:scheme",
+        "activatePolicy": "/management/v1/policy/:scheme/:uuid/activate",
+        "deactivatePolicies": "/management/v1/policies/:scheme/deactivate",
+        "getPolicy": "/management/v1/policy/:scheme/:uuid",
+        "getActivePolicy": "/management/v1/policy/:scheme",
+        "getPolicies": "/management/v1/policies/:scheme"
+    }
+}

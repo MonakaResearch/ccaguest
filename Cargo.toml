@@ -10,7 +10,7 @@ keywords = ["attestation", "verification", "veraison", "endorsements"]
 categories = ["command-line-utilities", "cryptography", "security"]
 
 [dependencies]
-clap = { version = "4.6.6", features = ["derive"] }
+clap = { version = "4.6.7", features = ["derive"] }
 clap-verbosity-flag = "3.0.4"
 env_logger = "0.11.11"
 log = "0.4.34"
@@ -18,15 +18,18 @@ thiserror = "2.0.20"
 url = { version = "2.5.8", features = ["serde"] }
 base64 = "0.23.1"
 serde_json = "1.0.151"
-regl = { git = "https://github.com/veraison/rust-regl.git", rev = "fe77b67"}
-rand = "0.10.2"
+regl = { git = "https://github.com/veraison/rust-regl.git", rev = "ce32937"}
+rand = "0.10.3"
 hex = "0.4.3"
 tokio = "1.53.1"
 coserv-rs = { git = "https://github.com/veraison/coserv-rs.git", features = ["openssl"], rev = "15121e8" }
-veraison-apiclient = { git = "https://github.com/veraison/rust-apiclient.git", features = [ "disk-caching" ], rev = "3f43ee8" }
+veraison-apiclient = { git = "https://github.com/MonakaResearch/rust-apiclient.git", rev = "2ad447f", features = ["disk-caching"] }
 cover = { git = "https://github.com/veraison/cover.git", rev = "030bc2d" }
 serde = "1.0.229"
 ear = { git = "https://github.com/veraison/rust-ear", rev = "4240df1" }
+uuid = "1.24.1"
+regorus = "0.12.0"
 
 [dev-dependencies]
 wiremock = "0.6.5"
+tempfile = "3.27.0"

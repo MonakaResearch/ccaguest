@@ -5,7 +5,7 @@ This repository contains a Rust-based command-line tool for the following ARM CC
 - Evidence generation
 - Evidence verification in remote and local mode
 - Endorsements fetch
-- Policy fetch and submission (TODO)
+- Policy fetch, submission, activation, and deactivation
 - Evidence, EAR, and endorsements display
 
 ## Command Tree

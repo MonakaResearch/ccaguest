@@ -107,6 +107,27 @@ pub fn check_output_file(output: &Path, force: bool) -> Result<()> {
     Ok(())
 }
 
+/// validate_uuid will parse and validate the provided UUID string.
+pub fn validate_uuid(uuid: &str) -> Result<uuid::Uuid> {
+    match uuid::Uuid::parse_str(uuid) {
+        Ok(uuid) => Ok(uuid),
+        Err(e) => Err(Error::custom(format!("Invalid UUID: {}: {}", uuid, e))),
+    }
+}
+
+// Validate that the policy rules are valid Rego source code.
+pub fn validate_policy_rules(path: &Path, rules: &[u8]) -> Result<()> {
+    let rego = String::from_utf8(rules.to_vec()).map_err(|err| {
+        Error::custom(format!("policy file is not valid UTF-8 Rego source: {err}"))
+    })?;
+
+    regorus::Engine::new()
+        .add_policy(path.to_string_lossy().into_owned(), rego)
+        .map_err(|err| Error::custom(format!("invalid Rego policy: {err}")))?;
+
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
