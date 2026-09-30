@@ -26,7 +26,7 @@ use veraison_apiclient::{
     http::ConfigureHttp,
 };
 
-pub const DEFAULT_CCA_PROFILE: &str = "tag:arm.com,2025:endorsements/cca_platform#1.0.0";
+pub const DEFAULT_CCA_PROFILE: &str = "tag:arm.com,2025:cca_platform#1.0.0";
 
 #[derive(Debug, Clone, ValueEnum)]
 pub enum ResultType {
