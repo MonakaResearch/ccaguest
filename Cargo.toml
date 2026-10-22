@@ -26,7 +26,7 @@ coserv-rs = { git = "https://github.com/veraison/coserv-rs.git", features = ["op
 veraison-apiclient = { git = "https://github.com/MonakaResearch/rust-apiclient.git", rev = "2ad447f", features = ["disk-caching"] }
 cover = { git = "https://github.com/veraison/cover.git", rev = "030bc2d" }
 serde = "1.0.229"
-ear = { git = "https://github.com/veraison/rust-ear", rev = "4240df1" }
+ear = { git = "https://github.com/veraison/rust-ear", rev = "15184e9a" }
 uuid = "1.24.1"
 regorus = "0.12.0"
 
