@@ -67,6 +67,10 @@ ignore = [
     #"RUSTSEC-2021-0145",
     # This advisory is that async-std is deprecated in favour of smol
     # But this is only used as a dev dependency in tests
+
+    # remove this once all the dependencies (regl and cover updates their
+    # dependencies
+    "RUSTSEC-2026-0387"
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
