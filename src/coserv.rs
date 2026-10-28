@@ -96,12 +96,57 @@ fn run_discovery_and_query<'a>(
     let rt = Runtime::new()
         .map_err(|e| Error::custom(format!("could not create tokio runtime: {e}")))?;
 
-    rt.block_on(async {
+    let res = rt.block_on(async {
         QueryClient::run_discovery(coserv_service_base_url, ca_cert, cache)
             .await?
             .run_query(query, must_sign)
             .await
-    })
+    })?;
+
+    if is_empty_coserv_result(&res) {
+        Err(Error::Custom("CoSERV response is empty".to_owned()))
+    } else {
+        Ok(res)
+    }
+}
+
+// todo(dhanus): add an is_empty method for coserv results in coserv-rs
+fn is_empty_coserv_result(coserv: &Coserv) -> bool {
+    let Some(results) = &coserv.results else {
+        return true;
+    };
+
+    if let Some(result_set) = &results.result_set {
+        match result_set {
+            coserv_rs::coserv::ResultSetTypeChoice::ReferenceValues(rv_res) => {
+                if !rv_res.rv_quads.is_empty() {
+                    return false;
+                }
+            }
+            coserv_rs::coserv::ResultSetTypeChoice::EndorsedValues(ev_res) => {
+                if !ev_res.ev_quads.is_empty() || !ev_res.cev_quads.is_empty() {
+                    return false;
+                }
+            }
+            coserv_rs::coserv::ResultSetTypeChoice::TrustAnchors(ta_res) => {
+                if !ta_res.ak_quads.is_empty() {
+                    return false;
+                }
+            }
+        }
+    }
+
+    if let Some(source_artifacts) = &results.source_artifacts
+        && !source_artifacts.is_empty()
+    {
+        return false;
+    }
+
+    if results.rim_result.is_some() {
+        return false;
+    }
+
+    true
 }
 
 /// Create a CoSERV query from CCA instance ID
@@ -297,5 +342,53 @@ impl QueryClient {
 
     fn supports_signing(&self) -> bool {
         self.verifier.is_some()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use coserv_rs::coserv::corim_rs::{Bytes, InstanceIdTypeChoice};
+    use coserv_rs::coserv::{
+        ArtifactTypeChoice, CoservBuilder, CoservEnvQueryBuilder, CoservProfile, CoservQuery,
+        CoservResult, CoservResultBuilder, EnvironmentSelectorMap, ResultTypeChoice,
+        StatefulInstanceBuilder, TimeStamp,
+    };
+
+    fn coserv_query() -> CoservQuery<'static> {
+        CoservQuery::EnvQuery(
+            CoservEnvQueryBuilder::new()
+                .artifact_type(ArtifactTypeChoice::TrustAnchors)
+                .result_type(ResultTypeChoice::CollectedArtifacts)
+                .environment_selector(EnvironmentSelectorMap::Instance(vec![
+                    StatefulInstanceBuilder::new()
+                        .environment(InstanceIdTypeChoice::Bytes(
+                            Bytes::from(vec![1, 2, 3, 4]).into(),
+                        ))
+                        .build()
+                        .unwrap(),
+                ]))
+                .build()
+                .unwrap(),
+        )
+    }
+
+    fn empty_coserv_result() -> CoservResult<'static> {
+        CoservResultBuilder::new()
+            .expiry(TimeStamp::now())
+            .build()
+            .unwrap()
+    }
+
+    #[test]
+    fn test_empty_coserv() {
+        let coserv = CoservBuilder::new()
+            .profile(CoservProfile::Uri("foo".to_owned()))
+            .query(coserv_query())
+            .results(empty_coserv_result())
+            .build()
+            .unwrap();
+
+        assert!(is_empty_coserv_result(&coserv))
     }
 }
